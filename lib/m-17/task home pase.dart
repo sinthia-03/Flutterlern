@@ -1,0 +1,149 @@
+import 'package:flutter/material.dart';
+import 'package:untitled4/m-17/cls-2SQL.dart';
+import 'package:untitled4/m-17/models/task.dart';
+
+class Datatask extends StatefulWidget {
+  const Datatask({super.key});
+
+  @override
+  State<Datatask> createState() => _DatataskState();
+}
+
+class _DatataskState extends State<Datatask> {
+  List<Task> tasks = [];
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    refreshTask();
+  }
+
+  Future<void> refreshTask() async {
+    tasks = await TaskDatabase.getTask();
+    setState(() {});
+  }
+
+  Future<void> deleteTask(int id) async {
+    await TaskDatabase.deleteTask(id);
+    refreshTask();
+    setState(() {});
+  }
+
+  Future<void> addTask() async {
+    if (controller.text.isNotEmpty) {
+      await TaskDatabase.insertTask(
+        Task(title: controller.text, isDone: false),
+      );
+      controller.clear();
+      refreshTask();
+    }
+  }
+  Future<void> toggleTaskStatus(Task task) async {
+    await TaskDatabase.updateTask(Task(
+      id: task.id,
+      title: task.title,
+      isDone: !task.isDone,
+    ));
+    refreshTask();
+    setState(() {});
+  }
+  Future<void> editTask(Task task) async {
+    TextEditingController editTaskController = TextEditingController();
+    editTaskController.text = task.title;
+
+    showDialog(context: context, builder: (BuildContext context){
+      return AlertDialog(
+        title: Text('EDIT Task'),
+        content: TextField(
+          controller: editTaskController,
+          decoration: InputDecoration(
+            hintText: 'Edit Task'
+          ),
+
+        ),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: Text('Cancle')),
+
+      TextButton(onPressed: () async{
+      await TaskDatabase.updateTask(Task(
+      id: task.id,
+      title: editTaskController.text,
+      isDone: !task.isDone,
+      ));
+      refreshTask();
+      setState(() {});
+      Navigator.pop(context);
+      },
+      child: Text('Save')),
+        ],
+      );
+    });
+    await TaskDatabase.updateTask(Task(
+      id: task.id,
+      title: task.title,
+      isDone: !task.isDone,
+    ));
+    refreshTask();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Task with db', style: TextStyle(color: Colors.white)),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                    decoration: InputDecoration(hintText: 'Enter task'),
+                  ),
+                ),
+                IconButton(onPressed: addTask, icon: Icon(Icons.add)),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                final task = tasks[index];
+                return Card(
+                  child: ListTile(
+                    leading: Checkbox(value: task.isDone, onChanged: (_)=>toggleTaskStatus(task)),
+                    title: Text(task.title,style: TextStyle(
+                      decoration:task.isDone ? TextDecoration.lineThrough : TextDecoration.none,color: task.isDone ? Colors.grey : Colors.blue
+
+                    ),),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(onPressed: ()=>editTask(task)
+                        , icon: Icon(Icons.edit)),
+
+                        IconButton(
+                          onPressed: () => deleteTask(task.id!),
+                          icon: Icon(Icons.delete, color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

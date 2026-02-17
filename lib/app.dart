@@ -4,16 +4,21 @@ import 'package:untitled4/M-12/cls-2,list.dart';
 import 'package:untitled4/M-12/grid.dart';
 import 'package:untitled4/c3.dart';
 import 'package:untitled4/m-11-cls-3.dart';
+import 'package:untitled4/m-17/models/task.dart';
 import 'package:untitled4/m11-c1.dart';
 import 'package:untitled4/m11-c2.dart';
 import 'Home.dart';
 import 'M-14/cls-2.dart';
+import 'M-14/cls-3.dart';
 import 'M-14/cls1-.dart';
+import 'M-14/test2.dart';
+import 'M-15/cls-1.dart';
 import 'm-13/DragDrop.dart';
 import 'm-13/cls-1.dart';
 import 'm-13/m-13cls-2.dart';
 import 'm-13/m-13cls-3.dart';
 import 'm-13/widget/m13cls-4(Animation).dart';
+import 'm-17/task home pase.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -61,7 +66,20 @@ class App extends StatelessWidget {
 
       ),
       title: 'Flutter 14',
-      home: Navigation()
+
+      routes: {
+        '/home' : (context) =>Home(),
+        '/login' : (context) =>Module11(),
+        '/navi' : (context) =>Navigation(),
+        '/bar' : (context)=> NaviUi(),
+        '/size' : (context) => Datatask(),
+        '/bottomNav':(context)=> Bottom(),
+        '/test2' : (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+              return Test2(name: args['name'], price: args['price'], onTap: args['onTap']);
+        }
+      },
+      initialRoute: '/size',
 
     );
   }

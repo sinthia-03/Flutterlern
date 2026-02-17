@@ -25,10 +25,33 @@ class _NavigationState extends State<Navigation> {
             ),
             ElevatedButton(onPressed: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>Test()));
+                  MaterialPageRoute(builder: (context)=>Test(name: 'Apple', price: 300, onTap: () {
+                    print('Hello from Home page');
+
+                  },)));
             },
                 child:Text('Test')
-            )
+            ),
+            
+            //Name Routes
+            ElevatedButton(onPressed: (){
+              Navigator.pushNamed(context,
+                  '/login');
+            },
+                child: Text('Login')),
+
+            ElevatedButton(onPressed: (){
+              Navigator.pushNamed(context,
+                  '/test2',arguments: {
+                'name' : 'Banna',
+                    'price' : 50,
+                    'onTap': ()
+                    {
+                      print('Nmaed Routes');
+                    }
+                  });
+            },
+                child: Text('Test with argu')),
           ],
         ),
       ),

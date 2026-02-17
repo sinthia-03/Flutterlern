@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-class Test extends StatelessWidget {
+class Test2 extends StatelessWidget {
   final String  name;
   final int price;
   final VoidCallback onTap;
 
 
-  const Test({super.key, required this.name, required this.price, required this.onTap});
+  const Test2({super.key, required this.name, required this.price, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
