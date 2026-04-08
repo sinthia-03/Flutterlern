@@ -7,12 +7,16 @@ import 'package:untitled4/m-11-cls-3.dart';
 import 'package:untitled4/m-17/models/task.dart';
 import 'package:untitled4/m11-c1.dart';
 import 'package:untitled4/m11-c2.dart';
+import 'package:untitled4/provider/prctics_provider.dart';
 import 'Home.dart';
 import 'M-14/cls-2.dart';
 import 'M-14/cls-3.dart';
 import 'M-14/cls1-.dart';
 import 'M-14/test2.dart';
 import 'M-15/cls-1.dart';
+
+import 'M-18/CRUD/crud.dart';
+import 'M-18/cls1.dart';
 import 'm-13/DragDrop.dart';
 import 'm-13/cls-1.dart';
 import 'm-13/m-13cls-2.dart';
@@ -74,12 +78,16 @@ class App extends StatelessWidget {
         '/bar' : (context)=> NaviUi(),
         '/size' : (context) => Datatask(),
         '/bottomNav':(context)=> Bottom(),
+        '/Appiii' : (context)=> Appi(),
+        '/crud' : (context)=> Todomodel(),
+        '/provider' : (context)=> PrcticsProvider(),
+
         '/test2' : (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
               return Test2(name: args['name'], price: args['price'], onTap: args['onTap']);
         }
       },
-      initialRoute: '/size',
+      initialRoute: '/provider',
 
     );
   }
